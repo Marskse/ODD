@@ -1,0 +1,16 @@
+
+import   "ODD_template.pkl"
+ odd1 : ODD_template.odd =  new {
+   scenery {
+     zone {
+       region_or_state = "Sweden"
+     }
+     drivable_area {
+       drivable_area_lane_specification {
+         direction_of_travel = "right_hand_travel"
+         speed_limit = 15.0 //Lane speed_limit can diffrent from drivable_area_type
+         lane_usage = true
+       }
+     }
+   }
+ }

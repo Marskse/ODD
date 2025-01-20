@@ -1,0 +1,168 @@
+@ModuleInfo { minPklVersion = "0.25.1" }
+module ODD.env_template.pkl
+
+// Road Vehicles Test scenarios for automated driving systems
+
+class Snowfall {
+no_snow: Boolean = true
+light_snow: Boolean = false
+moderate_snow: Boolean = false
+heavy_snow: Boolean = false
+}
+
+
+
+class Weather {
+  temperature: Float (isBetween(-40.0, 105.0)) = 20.0 // The temperature should be given in °C (or °F.) Automotive  -40 to +105
+/* a) no wind;
+b) calm: < 0,2 m/s;
+c) light air: 0,3 m/s to 1,5 m/s;
+d) light breeze: 1,6 m/s to 3,3 m/s;
+e) gentle breeze: 3,4 m/s to 5,4 m/s;
+f) moderate breeze: 5,5 m/s to 7,9 m/s;
+g) fresh breeze: 8,0 m/s to 10,7 m/s;
+h) strong breeze: 10,8 m/s to 13,8 m/s;
+i) near gale: 13,9 m/s to 17,1 m/s;
+j) gale: 17,2 m/s to 20,7 m/s;
+k) strong gale: 20,8 m/s to 24,4 m/s;
+l) storm: 24,5 m/s to 28,4 m/s;
+m) violent storm: 28,5 m/s to 32,6 m/s;
+n) hurricane force: ≥ 32,7 m/s. */
+  wind: Float (isBetween(0.0, 40.0)) = 0.0
+/*i) no rain;
+ii) light rain: when the precipitation rate is <2,5 mm/h;
+iii) moderate rain: when precipitation rate is between 2,5 mm/h and 7,6 mm/h;
+iv) heavy rain: when precipitation rate is between 7,6 mm/h and 50 mm/h;
+v) violent rain: when precipitation rate is between 50 mm/h and 100 mm/h;
+vi) cloudburst: when precipitation rate is > 100 mm/h. */
+  rainfall: Float (isBetween(0.0, 120.0)) = 0.0 //  mm/h
+  snowfall: Snowfall
+  //Other weather attributes, such as temperature, humidity, air pressure,
+  //surface temperature, hail, freezing rain, or solar flares, may be taken into account as part of the ODD definition.
+}
+
+class Type_particulates {
+  sand: Boolean = false
+  dust: Boolean = false
+  smoke: Boolean = false
+  pollution: Boolean = false
+  volcanic_ash: Boolean = false
+  water_spray: Boolean = false
+  nonprecipitating_water_droplets: Boolean = false
+  blowing_debris: Boolean = false
+}
+
+class  Particulates {
+  type_particulates : Type_particulates
+  intensity: Float = 0.0
+  size: Float = 0.0
+}
+
+class Natural_illumination {
+  daytime: Boolean = true // >2000lx
+  night_time: Boolean = false   // <1lx
+  Low_ambient: Boolean = false // <=2000 , >=1 lx
+}
+
+class Cloudiness {
+clear: Boolean = true
+partly_cloudy : Boolean = false
+overcast : Boolean = false
+}
+
+class Illumination {
+  natural_illumination : Natural_illumination
+  artificial_illumination: Boolean = false
+  cloudiness: Cloudiness
+}
+
+
+class V2XComm {
+  V2V: Boolean = false
+  V2I: Boolean = false
+  V2P: Boolean = false
+  V2N: Boolean = false
+}
+
+
+class CommType {
+  fleet_management: Boolean = false
+  traffic_management: Boolean = false
+  V2X: V2XComm
+}
+
+class CommTechnology {
+  cellular_2G: Boolean = false
+  cellular_2_5G: Boolean = false
+  cellular_3G: Boolean = false
+  cellular_4G: Boolean = false
+  cellular_5G: Boolean = false
+  satellite: Boolean = false
+  WLAN: Boolean = false
+  DSRC: Boolean = false
+  ITS_G5: Boolean = false
+  sidelink_PC5: Boolean = false
+}
+
+class Downlink {
+  //throughput: DataSize = 0.mb
+  //latency: Duration = 0.ms
+   throughput: Int = 0
+   latency: Int = 0
+}
+
+// noinspection TypeMismatch
+class Uplink {
+   //throughput: DataSize = 0.mb
+   //latency: Duration = 0.ms
+   throughput: Int = 0
+   latency: Int = 0
+}
+
+
+class Communication {
+  type: CommType
+  technology:CommTechnology
+  downlink: Downlink
+  uplink: Uplink
+}
+
+class Satellite {
+  Galileo: Boolean = false
+  GLONASS: Boolean = false
+  GPS: Boolean = false
+  RTK: Boolean = false
+  BeiDou: Boolean = false
+}
+
+class Local_based {
+  NavIC: Boolean = false
+  QZSS: Boolean = false
+  IRNSS: Boolean = false
+}
+
+class Positioning {
+  satellite: Satellite
+  local_based : Local_based
+}
+
+class RTK_Correction {
+  country_specific: Boolean = false
+  site_specific: Boolean = false
+  global_specific: Boolean = false
+}
+
+class Connectivity {
+  communication: Communication
+  positioning: Positioning
+  RTK: RTK_Correction
+}
+
+class env {
+  weather : Weather
+  illumination : Illumination
+  particulates : Particulates
+  connectivity : Connectivity
+}
+
+

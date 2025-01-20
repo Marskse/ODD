@@ -1,0 +1,45 @@
+@ModuleInfo { minPklVersion = "0.25.1" }
+module ODD.dyn_template.pkl
+// Road Vehicles Test scenarios for automated driving systems
+
+class Special_vehicles {
+  ambulance: Boolean = false
+  police_vehicle: Boolean = false
+  work_vehicle: Boolean = false
+  traffic_management_vehicle: Boolean = false
+  fire_engine: Boolean = false
+}
+
+class Agent_attributes {
+  stationary: Boolean = false
+  moving: Boolean = false
+  //density_of_agents: number = 0  // Number of agents per unit distance
+  //volume_of_traffic: number = 0  // Number of agents passing a reference point for a specified period of time
+  //flow_rate: number = 0  // Rate at which agents pass a given point (agents per hour)
+  position_relative_to_subject_vehicle: Boolean = false  // Position, e.g., presence of lead vehicle
+}
+class Agent_type {
+  motor_vehicle: Agent_attributes
+  non_motor_vehicle: Agent_attributes
+  vulnerable_road_users: Agent_attributes // pedestrians, two-wheelers, bicycles, e-scooters
+  animals: Agent_attributes
+  horse_riders:Agent_attributes
+}
+
+class Traffic_agents {
+  agent_type: Agent_type
+  special_vehicles: Special_vehicles
+}
+
+class Subject_vehicle {
+  max_speed: Float = 0.0  // Maximum allowable speed
+  predefined_routes: Boolean = false
+  vehicle_weight: Int = 0  // Weight of the vehicle
+}
+
+class dynamic_elements {
+  traffic_agents: Traffic_agents
+  subject_vehicle: Subject_vehicle
+}
+
+

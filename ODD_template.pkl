@@ -1,0 +1,12 @@
+@ModuleInfo { minPklVersion = "0.25.1" }
+module ODD.ODD_template.pkl
+
+import "dyn_template.pkl"
+import "env_template.pkl"
+import "scen_template.pkl"
+
+class odd {
+  scenery : scen_template.scenery
+  environment: env_template.env
+  dynamic : dyn_template.dynamic_elements
+}

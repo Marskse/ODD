@@ -1,0 +1,336 @@
+@ModuleInfo { minPklVersion = "0.25.1" }
+module ODD.scen_template.pkl
+/* Road Vehicles — Test scenarios for automated driving systems —
+
+
+Scenery elements
+
+At the top level, “scenery elements” shall at least be classified into the following attributes or have
+additional attributes:
+a) zones;
+b) drivable area;
+c) junctions;
+d) special structures;
+e) fixed road structures;
+f) temporary road structures.
+*/
+
+
+// Zones
+
+
+
+class Fixed_Zone {
+  school_zone: Boolean = false
+  environmental_zone: Boolean = false
+  industrial_zone: Boolean = false
+  parking_lot: Boolean = false
+}
+
+class Dynamic_Zone {
+  traffic_management_zone: Boolean = false
+  mobile_work_zone: Boolean = false
+}
+
+class Interference_Zone {
+  urban_canyon: Boolean = false
+  overhead_wires: Boolean = false
+  dense_foliage: Boolean = false
+}
+
+class Zone_type {
+  fixed_zone: Fixed_Zone
+  dynamic_zone: Dynamic_Zone
+  interference_zone: Interference_Zone
+  port_zone: Boolean = false
+  freight_distribution_centre: Boolean = false
+}
+
+
+class Zone {
+    geofenced_areas: Boolean = false
+    zone_type: Zone_type
+    region_or_state: String
+  }
+
+/*--------------------------------------*/
+
+// Drivable area types
+
+class Drivable_area_details {
+  active_traffic_management: Boolean = false
+  speed_limit: Float (isBetween(0, speed_limit_global)) = 0.0
+}
+
+class Drivable_area_type {
+  motorways_or_highways_or_interstates: Drivable_area_details
+  primary_roads: Drivable_area_details
+  radial_roads: Drivable_area_details
+  distributor_roads: Drivable_area_details
+  minor_or_local_roads: Drivable_area_details
+  slip_roads_or_off_ramps: Drivable_area_details
+  parking_space: Drivable_area_details
+  shared_space: Drivable_area_details
+}
+
+//drivable area geometry
+class Horizontal_plane {
+  straight_lines: Boolean = false
+  curves: Boolean = false
+}
+
+class Transverse_plane {
+  divided: Boolean = false
+  undivided: Boolean = false
+  pavements: Boolean = false
+  barrier_on_the_edges: Boolean = false
+  types_of_lanes_together: Boolean = false
+  superelevation_banking: Boolean = false
+}
+
+class Longitudinal_plane {
+  up_slope: Boolean = false
+  down_slope: Boolean = false
+  level_plane: Boolean = false
+}
+
+
+class Drivable_area_geometry{
+    horizontal_plane : Horizontal_plane
+    transverse_plane : Transverse_plane
+    longitudinal_plane: Longitudinal_plane
+}
+
+//drivable area lane specification
+
+class Lane_dimensions {
+  // Define properties related to lane dimensions if needed amend it for Lane_types
+  lane_dimension : Float (isBetween(2.7, 3.2)) = 2.8 // meters
+}
+
+class Lane_markings {
+  clear_lane_marking: Boolean = true
+  blurred_lane_marking: Boolean = false
+  no_lane_marking: Boolean = false
+  temporary_lane_marking: Boolean = false
+}
+
+
+
+class Lane_type {
+  bus_lane: Boolean = false
+  traffic_lane: Boolean = true
+  cyclists_lane: Boolean = false
+  tram_lane: Boolean = false
+  emergency_lane: Boolean = false
+  shared_lane: Boolean = false
+  other_special_purpose_lane: Boolean = false
+}
+
+const speed_limit_global = 30.0
+typealias Direction_of_travel = "right_hand_travel" | "left_hand_travel"
+
+class Drivable_area_lane_specification {
+  lane_dimensions: Lane_dimensions
+  lane_markings: Lane_markings
+  lane_type: Lane_type
+  direction_of_travel: Direction_of_travel
+  speed_limit : Float (isBetween(0, speed_limit_global))  //Lane speed_limit can diffrent from drivable_area_type
+  lane_usage : Boolean = true
+}
+
+
+//drivable area signs
+
+class Sign_details {
+  movable_signs: Boolean = false
+  fixed_signs: Boolean = false
+  variable_messaging: Boolean = false
+  uniform_messaging: Boolean = false
+  full_time: Boolean = false
+  temporary: Boolean = false
+  language: String = ""
+  quality: String = ""  // Quality of signs as defined by stakeholders
+}
+
+class Drivable_area_signs {
+  information: Sign_details
+  regulatory: Sign_details
+  warning: Sign_details
+}
+
+
+//drivable area edge
+
+class Shoulder {
+  paved: Boolean = false
+  gravel: Boolean = false
+  grass: Boolean = false
+}
+
+class Solid_barriers {
+  grating: Boolean = false
+  rails: Boolean = false
+  curb: Boolean = false
+  cones: Boolean = false
+}
+
+class Drivable_area_edge {
+  line_markers: Boolean = false
+  shoulder: Shoulder
+  snowbanks: Boolean = false
+  solid_barriers: Solid_barriers
+  temporary_line_markers: Boolean = false
+  none: Boolean = false
+}
+
+//drivable area surface.
+
+class Drivable_area_surface_type {
+  asphalt: Boolean = false
+  cement_concrete: Boolean = false
+  pavers: Boolean = false
+  cobblestone: Boolean = false
+  granite_setts: Boolean = false
+  gravel: Boolean = false
+}
+
+class Drivable_area_surface_features {
+  cracks: Boolean = false
+  potholes: Boolean = false
+  ruts: Boolean = false
+  swells: Boolean = false
+  speed_bump: Boolean = false
+  other_speed_obstacle: Boolean = false
+}
+
+
+class Drivable_area_induced_surface_conditions {
+  icy: Boolean = false
+  flooded: Boolean = false
+  //mirage: Boolean = false
+  snow_on_surface: Boolean = false
+  standing_water: Boolean = false
+  wet: Boolean = false
+  sand_contamination: Boolean = false
+  leaves_contamination: Boolean = false
+  larger_debris_contamination: Boolean = false
+  oil_spill_contamination: Boolean = false
+}
+
+
+class Drivable_area_surface {
+  drivable_area_induced_surface_conditions: Drivable_area_induced_surface_conditions
+  drivable_area_surface_features: Drivable_area_surface_features
+  drivable_area_surface_type: Drivable_area_surface_type
+}
+
+class Drivable_area {
+    drivable_area_type: Drivable_area_type
+    drivable_area_geometry: Drivable_area_geometry
+    drivable_area_lane_specification: Drivable_area_lane_specification
+    drivable_area_signs: Drivable_area_signs
+    drivable_area_edge : Drivable_area_edge
+    drivable_area_surface: Drivable_area_surface
+}
+
+/*--------------------------------------*/
+
+class Roundabout {
+  normal_signalised: Boolean = false
+  normal_non_signalised: Boolean = false
+  compact_signalised: Boolean = false
+  compact_non_signalised: Boolean = false
+  double_signalised: Boolean = false
+  double_non_signalised: Boolean = false
+  large_signalised: Boolean = false
+  large_non_signalised: Boolean = false
+  mini_signalised: Boolean = false
+  mini_non_signalised: Boolean = false
+}
+
+class Intersection {
+  T_junctions_signalised: Boolean = false
+  T_junctions_non_signalised: Boolean = false
+  staggered_signalised: Boolean = false
+  staggered_non_signalised: Boolean = false
+  Y_junction_signalised: Boolean = false
+  Y_junction_non_signalised: Boolean = false
+  cross_roads_signalised: Boolean = false
+  cross_roads_non_signalised: Boolean = false
+  grade_separated_signalised: Boolean = false
+  grade_separated_non_signalised: Boolean = false
+}
+
+class Junctions {
+  roundabout: Roundabout
+  intersection: Intersection
+}
+
+
+/*--------------------------------------*/
+
+class Basic_drivable_area_structures {
+  buildings: Boolean = false
+  street_lights: Boolean = false
+  street_furniture: Boolean = false
+  vegetation: Boolean = false
+}
+
+/*--------------------------------------*/
+class Dimension {
+  length: Float = 0.0
+  width: Float = 0.0
+  height: Float = 0.0
+  shoulder_width: Float = 0.0
+}
+
+class Usage {
+  driving_on: Boolean = false
+  driving_under: Boolean = false
+}
+
+class Special_structure_type {
+  automatic_access_control_barrier: Boolean = false
+  bridge: Boolean = false
+  pedestrian_crossing: Boolean = false
+  rail_crossing: Boolean = false
+  tunnel: Boolean = false
+  toll_plaza: Boolean = false
+}
+
+class Special_structures {
+  type: Special_structure_type
+  dimension: Dimension
+  usage: Usage
+
+}
+
+/*--------------------------------------*/
+class Temporary_drivale_area_structures {
+  construction_site_detours: Boolean = false
+  refuse_collection: Boolean = false
+  works: Boolean = false
+  signage: Boolean = false
+}
+/*--------------------------------------*/
+/*
+At the top level, the ODD shall be classified into the following attributes:
+— scenery elements;
+— environmental conditions;
+— dynamic elements.
+
+Use import or ammend
+
+*/
+/*--------------------------------------*/
+
+class scenery {
+    zone : Zone
+    drivable_area: Drivable_area
+    junctions : Junctions
+    special_structures: Special_structures
+    basic_drivable_area_structures: Basic_drivable_area_structures
+    temporary_drivable_area_structures: Temporary_drivale_area_structures
+}
+
